@@ -5,7 +5,7 @@
    "license": "MIT",
    "type": "module",
    "scripts": {
-      "start": "node --es-module-specifier-resolution=node index.js"
+      "start": "node --experimental-specifier-resolution=node index.js"
    },
    "dependencies": {
       "bcrypt": "^5.1.1",
