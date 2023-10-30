@@ -1,8 +1,8 @@
 import { validationResult } from 'express-validator';
-import User from '../models/user.model';
-import UserService from '../services/user.service';
-import ApiError from '../exceptions/apiError';
-import CommonUserDto from '../dto/commonUser.dto';
+import User from '../models/user.model.js';
+import UserService from '../services/user.service.js';
+import ApiError from '../exceptions/apiError.js';
+import CommonUserDto from '../dto/commonUser.dto.js';
 
 export default class UserController {
    static async registration(req, res, next) {

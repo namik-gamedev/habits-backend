@@ -1,10 +1,10 @@
 import { compare, hash } from 'bcrypt';
-import User from '../models/user.model';
+import User from '../models/user.model.js';
 import { v4 } from 'uuid';
-import MailService from './mail.service';
-import TokenService from './token.service';
-import UserDto from '../dto/user.dto';
-import ApiError from '../exceptions/apiError';
+import MailService from './mail.service.js';
+import TokenService from './token.service.js';
+import UserDto from '../dto/user.dto.js';
+import ApiError from '../exceptions/apiError.js';
 
 export default class UserService {
    static async createUser(email, password) {

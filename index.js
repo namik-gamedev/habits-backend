@@ -3,8 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import router from './router';
-import errorMiddleware from './middlewares/error.middleware';
+import router from './router/index.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 dotenv.config();
 

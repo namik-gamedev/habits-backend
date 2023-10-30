@@ -1,5 +1,5 @@
-import ApiError from '../exceptions/apiError';
-import TokenService from '../services/token.service';
+import ApiError from '../exceptions/apiError.js';
+import TokenService from '../services/token.service.js';
 
 const authMiddleware = (req, res, next) => {
    // Bearer <toke>
