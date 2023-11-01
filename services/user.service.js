@@ -5,12 +5,13 @@ import MailService from './mail.service.js';
 import TokenService from './token.service.js';
 import UserDto from '../dto/user.dto.js';
 import ApiError from '../exceptions/apiError.js';
+import { AUTH_EMAIL_ALREADY_USED_ERROR_CODE, AUTH_INVALID_PASSWORD_ERROR_CODE, AUTH_INVALID_TOKEN_ERROR_CODE, AUTH_NO_CREDENTIALS_ERROR_CODE, AUTH_USER_NOT_FOUND_ERROR_CODE, AUTH_WRONG_ACTIAVTION_LINK_ERROR_CODE } from '../exceptions/errorCodes.js';
 
 export default class UserService {
    static async createUser(email, password) {
       const candidate = await User.findOne({ email });
       if (candidate) {
-         throw ApiError.Conflict('Email already in use');
+         throw ApiError.Conflict(AUTH_EMAIL_ALREADY_USED_ERROR_CODE);
       }
 
       const passwordHash = await hash(password, 5);
@@ -30,7 +31,7 @@ export default class UserService {
    static async activate(activationLink) {
       const user = await User.findOne({ activationLink });
       if (!user) {
-         throw ApiError.BadRequest('Wrong activation link');
+         throw ApiError.BadRequest(AUTH_WRONG_ACTIAVTION_LINK_ERROR_CODE);
       }
       user.activated = true;
       await user.save();
@@ -38,11 +39,11 @@ export default class UserService {
    static async login(email, password) {
       const user = await User.findOne({ email: email });
       if (!user) {
-         throw ApiError.BadRequest('User with this email address was not found');
+         throw ApiError.BadRequest(AUTH_USER_NOT_FOUND_ERROR_CODE);
       }
       const isPasswordValid = await compare(password, user.password);
       if (!isPasswordValid) {
-         throw ApiError.BadRequest('Invalid password');
+         throw ApiError.BadRequest(AUTH_INVALID_PASSWORD_ERROR_CODE);
       }
       const userDto = new UserDto(user);
       const tokens = await TokenService.updateTokens({ ...userDto });
@@ -51,13 +52,13 @@ export default class UserService {
    }
    static async refresh(refreshToken) {
       if (!refreshToken) {
-         throw ApiError.CredentialsWereNotProvided();
+         throw ApiError.Unauthorized(AUTH_NO_CREDENTIALS_ERROR_CODE)
       }
       const userData = TokenService.validateRefreshToken(refreshToken);
       const tokenFromDb = await TokenService.findToken(refreshToken);
 
       if (!userData || !tokenFromDb) {
-         throw ApiError.TokenIsInvalidOrExpired();
+         throw ApiError.Unauthorized(AUTH_INVALID_TOKEN_ERROR_CODE);
       }
 
       const user = await User.findById(userData.id);

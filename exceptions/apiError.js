@@ -1,23 +1,22 @@
 export default class ApiError extends Error {
    status;
    errors;
+	code;
 
-   constructor(status, message, errors = []) {
-      super(message);
+   constructor(status, code, errors = []) {
+		super()
       this.status = status;
       this.errors = errors;
+		this.code = code;
    }
 
-   static CredentialsWereNotProvided() {
-      return new ApiError(401, 'Authentication credentials were not provided');
+   static Unauthorized(code) {
+      return new ApiError(401, code);
    }
-   static TokenIsInvalidOrExpired() {
-      return new ApiError(401, 'Given token is invalid or expired');
+   static BadRequest(code, errors = []) {
+      return new ApiError(400, code, errors);
    }
-   static BadRequest(message, errors = []) {
-      return new ApiError(400, message, errors);
-   }
-   static Conflict(message) {
-      return new ApiError(409, message);
+   static Conflict(code) {
+      return new ApiError(409, code);
    }
 }

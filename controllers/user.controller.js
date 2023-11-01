@@ -3,13 +3,14 @@ import User from '../models/user.model.js';
 import UserService from '../services/user.service.js';
 import ApiError from '../exceptions/apiError.js';
 import CommonUserDto from '../dto/commonUser.dto.js';
+import { VALIDATION_ERROR_CODE } from '../exceptions/errorCodes.js';
 
 export default class UserController {
    static async registration(req, res, next) {
       try {
          const errors = validationResult(req);
          if (!errors.isEmpty()) {
-            return next(ApiError.BadRequest('Validation failed', errors.array()));
+            return next(ApiError.BadRequest(VALIDATION_ERROR_CODE, errors.array()));
          }
 
          const { email, password } = req.body;
