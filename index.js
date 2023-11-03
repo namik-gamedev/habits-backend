@@ -14,21 +14,21 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-   cors({
-      credentials: true,
-      origin: CLIENT_URL,
-   })
+	cors({
+		credentials: true,
+		origin: CLIENT_URL,
+	}),
 );
 app.use('/api', router);
 app.use(errorMiddleware);
 
 const start = async () => {
-   try {
-      await mongoose.connect(DB_URL);
-      app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
-   } catch (e) {
-      console.log(e);
-   }
+	try {
+		await mongoose.connect(DB_URL);
+		app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 start();
