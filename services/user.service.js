@@ -8,7 +8,7 @@ import ApiError from '../exceptions/apiError.js';
 import { AUTH_EMAIL_ALREADY_USED_ERROR_CODE, AUTH_INVALID_PASSWORD_ERROR_CODE, AUTH_INVALID_TOKEN_ERROR_CODE, AUTH_NO_CREDENTIALS_ERROR_CODE, AUTH_USER_NOT_FOUND_ERROR_CODE, AUTH_WRONG_ACTIAVTION_LINK_ERROR_CODE } from '../exceptions/errorCodes.js';
 
 export default class UserService {
-   static async createUser(email, password) {
+   static async createUser(email, password, name) {
       const candidate = await User.findOne({ email });
       if (candidate) {
          throw ApiError.Conflict(AUTH_EMAIL_ALREADY_USED_ERROR_CODE);
@@ -17,7 +17,7 @@ export default class UserService {
       const passwordHash = await hash(password, 5);
       const activationLink = v4();
 
-      const user = await User.create({ email, password: passwordHash, activationLink });
+      const user = await User.create({ email, password: passwordHash, activationLink, name });
       await MailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
 
       const userDto = new UserDto(user);

@@ -13,8 +13,8 @@ export default class UserController {
             return next(ApiError.BadRequest(VALIDATION_ERROR_CODE, errors.array()));
          }
 
-         const { email, password } = req.body;
-         const userData = await UserService.createUser(email, password);
+         const { email, password, name } = req.body;
+         const userData = await UserService.createUser(email, password, name);
          res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
          return res.json(userData);
       } catch (e) {

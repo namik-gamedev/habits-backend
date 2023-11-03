@@ -10,6 +10,10 @@ const UserSchema = new Schema({
       type: String,
       required: true,
    },
+	name: {
+		type:String,
+		required: true,
+	},
    activated: {
       type: Boolean,
       default: false,
