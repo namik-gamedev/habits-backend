@@ -19,4 +19,7 @@ export default class ApiError extends Error {
 	static Conflict(code) {
 		return new ApiError(409, code);
 	}
+	static NotFound(code) {
+		return new ApiError(404, code);
+	}
 }
