@@ -1,8 +1,11 @@
-import moment from 'moment';
 import { ObjectId } from 'mongodb';
 import { Schema, model } from 'mongoose';
 
 const HabitSchema = new Schema({
+	userId: {
+		type: ObjectId,
+		required: true,
+	},
 	name: {
 		type: String,
 		required: true,

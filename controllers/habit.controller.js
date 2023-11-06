@@ -1,9 +1,11 @@
 import HabitService from '../services/habit.service.js';
 
 export default class HabitController {
-	static async getAllHabits(_req, res, next) {
+	static async getAllHabits(req, res, next) {
 		try {
-			const habits = await HabitService.getAllHabits();
+			const { userId } = req;
+
+			const habits = await HabitService.getAllHabits(userId);
 			res.json(habits);
 		} catch (e) {
 			next(e);
@@ -11,8 +13,9 @@ export default class HabitController {
 	}
 	static async createHabit(req, res, next) {
 		try {
-			const { name, goal, schedule } = req.body;
-			await HabitService.createHabit(name, goal, schedule);
+			const { userId } = req;
+
+			await HabitService.createHabit({ ...req.body, userId });
 			res.redirect(`${process.env.API_URL}/api/habits`);
 		} catch (e) {
 			next(e);

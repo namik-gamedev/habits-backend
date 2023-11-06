@@ -5,7 +5,7 @@ import { HABIT_DAY_NOT_FOUND, HABIT_NOT_FOUND } from '../exceptions/errorCodes.j
 import Habit from '../models/habit.model.js';
 
 export default class HabitService {
-	static async getAllHabits() {
+	static async getAllHabits(userId) {
 		// const today = moment();
 		// const date = today.startOf('day');
 		// const weekday = today.isoWeekday() - 1;
@@ -33,13 +33,13 @@ export default class HabitService {
 		// 		},
 		// 	},
 		// );
-		const habits = await Habit.find();
+
+		const habits = await Habit.find({ userId });
 		const habitsDto = habits.map(habit => new HabitDto(habit));
 		return habitsDto;
 	}
-	static async createHabit(name, goal, schedule) {
-		const today = moment().startOf('day');
-		const habit = await Habit.create({ name, goal, schedule });
+	static async createHabit(values) {
+		const habit = await Habit.create(values);
 		return habit;
 	}
 	static async deleteHabit(id) {
