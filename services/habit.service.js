@@ -6,33 +6,33 @@ import Habit from '../models/habit.model.js';
 
 export default class HabitService {
 	static async getAllHabits(userId) {
-		const today = moment();
-		const date = today.startOf('day');
-		const weekday = today.isoWeekday() - 1;
-		await Habit.updateMany(
-			{
-				$or: [
-					{
-						history: {
-							$elemMatch: {
-								date: { $lte: date },
-							},
-						},
-					},
-					{ history: { $size: 0 } },
-				],
-				schedule: {
-					$in: [weekday],
-				},
-			},
-			{
-				$push: {
-					history: {
-						date,
-					},
-				},
-			},
-		);
+		// const today = moment();
+		// const date = today.startOf('day');
+		// const weekday = today.isoWeekday() - 1;
+		// await Habit.updateMany(
+		// 	{
+		// 		$or: [
+		// 			{
+		// 				history: {
+		// 					$elemMatch: {
+		// 						date: { $lte: date },
+		// 					},
+		// 				},
+		// 			},
+		// 			{ history: { $size: 0 } },
+		// 		],
+		// 		schedule: {
+		// 			$in: [weekday],
+		// 		},
+		// 	},
+		// 	{
+		// 		$push: {
+		// 			history: {
+		// 				date,
+		// 			},
+		// 		},
+		// 	},
+		// );
 
 		const habits = await Habit.find({ userId });
 		const habitsDto = habits.map(habit => new HabitDto(habit));
@@ -82,11 +82,11 @@ export default class HabitService {
 				day.streak = 0;
 			}
 		} else {
-			throw ApiError.NotFound(HABIT_DAY_NOT_FOUND);
-			// habit.history.push({
-			// 	date,
-			// 	progress,
-			// });
+			// throw ApiError.NotFound(HABIT_DAY_NOT_FOUND);
+			habit.history.push({
+				date,
+				progress,
+			});
 		}
 
 		const totalDoneDays = habit.history.reduce((total, day) => (day.progress >= habit.goal ? total + 1 : total), 0);

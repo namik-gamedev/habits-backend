@@ -60,11 +60,18 @@ export default class UserController {
 			next(e);
 		}
 	}
-	static async getUsers(_req, res, next) {
+	static async getAllUsers(_req, res, next) {
 		try {
-			const users = await User.find();
-			const commonUsers = users.map(user => new CommonUserDto(user));
-			res.json(commonUsers);
+			const users = UserService.getAllUsers();
+			res.json(cusers);
+		} catch (e) {
+			next(e);
+		}
+	}
+	static async deleteAllUsers(_req, res, next) {
+		try {
+			const users = await User.deleteMany({});
+			res.json([]);
 		} catch (e) {
 			next(e);
 		}

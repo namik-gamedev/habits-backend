@@ -21,6 +21,9 @@ const UserSchema = new Schema({
 	activationLink: {
 		type: String,
 	},
+	expoPushToken: {
+		type: String,
+	},
 });
 
 const User = model('User', UserSchema);

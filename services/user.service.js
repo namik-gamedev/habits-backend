@@ -13,8 +13,17 @@ import {
 	AUTH_USER_NOT_FOUND_ERROR_CODE,
 	AUTH_WRONG_ACTIAVTION_LINK_ERROR_CODE,
 } from '../exceptions/errorCodes.js';
+import CommonUserDto from '../dto/commonUser.dto.js';
 
 export default class UserService {
+	static async getAllUsers() {
+		const users = await User.find();
+		const commonUsers = users.map(user => new CommonUserDto(user));
+		return commonUsers;
+	}
+	static async deleteAllUsers() {
+		await User.deleteMany({});
+	}
 	static async createUser(email, password, name) {
 		const candidate = await User.findOne({ email });
 		if (candidate) {
